@@ -1,6 +1,6 @@
-# Construction Intelligence — Data & AI Engineer KTP Portfolio
+# Construction Intelligence 
 
-An **end-to-end runnable portfolio project** aligned with the Ulster University / Michael Nugent Ltd **Data and AI Engineer (KTP Associate)** briefing, reference 044106. This is an independent demonstration, **not** an official Nugent system.
+An **end-to-end runnable portfolio project**.
 
 ## What it demonstrates
 
