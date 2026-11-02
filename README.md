@@ -1,74 +1,78 @@
-# Construction Intelligence — Data & AI Engineer KTP Portfolio
+Construction Intelligence — AI-Powered Project Estimation & Analytics
+An end-to-end Python application for analysing construction project data, monitoring project performance, and estimating labour and material requirements for future projects. It combines a reproducible data pipeline, SQL-based reporting, machine learning, and an interactive web dashboard.
+Data notice: The sample dataset is entirely synthetic. This application is a demonstration prototype and its estimates should not be used for operational or financial decisions without validation on representative real-world data.
 
-An **end-to-end runnable portfolio project** aligned with the Ulster University / Michael Nugent Ltd **Data and AI Engineer (KTP Associate)** briefing, reference 044106. This is an independent demonstration, **not** an official Nugent system.
-
-## What it demonstrates
-
-- **ETL and data modelling:** fictional construction jobs CSV → validation → indexed SQLite reporting table and KPI SQL view.
-- **SQL and BI:** project costs, budget variance, category totals, executive metrics and interactive Plotly charts.
-- **Predictive AI:** scikit-learn multi-output Random Forest predicting labour hours and material quantities from early project characteristics.
-- **Usable interface:** Streamlit estimator, editable costing assumptions, CSV exports and model evaluation panel.
-- **Engineering:** reproducible synthetic data, unit tests, GitHub Actions CI, architecture documentation.
-
-## Quick start in Visual Studio Code
-
-Prerequisites: Python 3.11 or 3.12, VS Code, Python extension.
-
-```powershell
-# In VS Code Terminal (Windows PowerShell)
+Features
+- Data ingestion and validation: Load simulated construction project records from CSV into an indexed SQLite reporting database.
+- Business intelligence: Explore project costs, budget variance, category-level summaries, KPIs, and interactive Plotly visualisations.
+- Predictive estimation: Train a scikit-learn multi-output Random Forest to estimate labour hours and material quantities from early project characteristics.
+- Interactive application: Use a Streamlit dashboard to review performance, generate project estimates, adjust costing assumptions, and export results to CSV.
+- Reproducibility and quality: Regenerate sample data and model artefacts, run automated tests, and use the included GitHub Actions workflow.
+Technology stack
+Python · pandas · scikit-learn · SQLite · SQL · Streamlit · Plotly · pytest · GitHub Actions
+Getting started
+Requirements
+- Python 3.11 or 3.12
+- Visual Studio Code (recommended) with the Python extension, or another Python development environment
+Windows (PowerShell)
+Open the project folder in VS Code, then run the following commands in its terminal:
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 python -m scripts.bootstrap
 streamlit run app.py
-```
-
-If `py -3.11` is not installed, use `python -m venv .venv`. On macOS/Linux, activate with `source .venv/bin/activate`. If PowerShell blocks activation, use `.venv\Scripts\python.exe -m pip install -r requirements.txt` and similarly prefix other Python commands, or switch the VS Code terminal to Command Prompt.
-
-Streamlit opens at `http://localhost:8501`.
-
-## Run tests
-
-```bash
+If Python 3.11 is not available through the py launcher, use python -m venv .venv. If PowerShell prevents environment activation, run commands with .venv\Scripts\python.exe instead of python and .venv\Scripts\streamlit.exe instead of streamlit.
+macOS / Linux
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m scripts.bootstrap
+streamlit run app.py
+Open http://localhost:8501 to use the application.
+Typical workflow
+1. Prepare data: Run python -m scripts.bootstrap to generate synthetic project records, populate the SQLite database, and train the estimation model.
+2. Explore performance: Open the Streamlit dashboard to review project KPIs, budgets, costs, and visualisations.
+3. Estimate a project: Enter project type, area, complexity, and planned duration; generate predicted labour hours and material quantities.
+4. Review indicative costs: Adjust labour and material rates to calculate scenario-based estimates.
+5. Export results: Download relevant data or estimates as CSV for further analysis.
+Architecture
+Synthetic project data (CSV)
+          |
+          v
+Validation and ETL pipeline
+          |
+          v
+SQLite reporting database ---> SQL KPI views ---> Streamlit dashboard
+          |
+          v
+Model training and evaluation
+          |
+          v
+Trained estimation model ---> Project estimator ---> CSV export
+See [architecture.md](architecture.md) for additional technical details. The current implementation uses SQLite and Streamlit. Connections to external enterprise systems or BI platforms are possible future extensions; they are not included in this prototype.
+Machine learning approach
+- Inputs: Project type, project area, complexity, and planned duration.
+- Targets: Labour hours and material units.
+- Algorithm: Multi-output Random Forest regression.
+- Evaluation: Chronological 80/20 holdout with MAE, RMSE, and R² reported separately for each target.
+- Leakage safeguards: Budget, actual cost, costing rates, and target quantities are excluded from predictive model inputs. Rates are applied after prediction to calculate indicative costs.
+Limitations: The dataset is simulated, so evaluation metrics do not establish performance on actual construction projects. The single chronological split is illustrative rather than a comprehensive backtesting procedure. Before real-world use, the system would need data-quality checks, additional validation, model monitoring, access controls, and governed cost assumptions.
+Run automated tests
 python -m pytest -q
-```
-
-## Upload to GitHub
-
-Create an empty GitHub repository (for example `construction-intelligence-ktp`), then in VS Code terminal:
-
-```bash
+Publish to GitHub
+Create an empty GitHub repository, for example construction-intelligence-platform, and run:
 git init
 git add .
-git commit -m "Initial end-to-end construction intelligence demo"
+git commit -m "Initial construction intelligence platform"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/construction-intelligence-ktp.git
+git remote add origin https://github.com/YOUR_USERNAME/construction-intelligence-platform.git
 git push -u origin main
-```
-
-Replace `YOUR_USERNAME` with your own GitHub username. Generated database and trained models are ignored; every clone recreates them with `python -m scripts.bootstrap`.
-
-## Architecture
-
-See [architecture.md](architecture.md). Current demo uses SQLite and Streamlit; **Power BI and Microsoft Dynamics 365 Business Central are proposed integration targets, not implemented integrations**.
-
-## Model design and limitations
-
-- Inputs: project type, area, complexity and planned duration. Rates are used **only after prediction** for cost calculation.
-- Targets: labour hours and material units.
-- Evaluation: 80/20 chronological holdout, MAE/RMSE/R² on both targets.
-- Budget, actual cost, material rate, labour rate, and target quantities are **not model inputs**, avoiding direct target leakage.
-- Data is simulated, so performance is not evidence of effectiveness on real company projects. Real deployment needs real data validation, drift monitoring, access controls, approvals and cost-rate governance.
-- The date split is a simple demonstration, not a complete time-aware backtesting strategy.
-
-## Interview demonstration (5 minutes)
-
-1. **0:00–0:45:** Explain business problem: disconnected data, inconsistent reporting and manual estimates.
-2. **0:45–1:30:** Show architecture and CSV-to-SQLite pipeline.
-3. **1:30–2:20:** Show executive dashboard and project KPIs.
-4. **2:20–3:40:** Enter a new project and generate labour/material estimate with cost assumptions.
-5. **3:40–5:00:** Show evaluation, discuss leakage safeguards and how you would connect Business Central and Power BI in production.
-
-## Portfolio ethics
-
-All records are fictional. This project is not affiliated with or endorsed by Michael Nugent Ltd or Ulster University. Do not present simulated results as real operational outcomes.
+Replace YOUR_USERNAME with your GitHub username. Generated databases and trained model artefacts are excluded from version control and can be recreated with python -m scripts.bootstrap.
+Future enhancements
+- Connect to production data sources using authenticated APIs and scheduled ingestion.
+- Add configurable reporting dimensions and operational KPI definitions.
+- Compare multiple regression models and apply rolling-origin validation.
+- Include uncertainty intervals, model monitoring, and drift detection.
+- Add role-based access controls and deployment configuration.
+Data and usage disclaimer
+All included project records are fictional and are intended for development, testing, and demonstration. Predicted quantities and costs are illustrative, not professional construction estimates.
